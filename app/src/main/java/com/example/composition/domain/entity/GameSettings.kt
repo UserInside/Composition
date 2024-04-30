@@ -1,9 +1,9 @@
 package com.example.composition.domain.entity
 
-class GameSettings(
-    val timeInSeconds: Int,
-    val actualPointsCount: Int,
-    val minPointsRequired: Int,
-    val level: Level,
+data class GameSettings(
+    val maxSumValue: Int,
+    val minCountOfRightAnswers: Int,
+    val minPercentOfRightAnswers: Int,
+    val gameTimeInSeconds: Int,
     ){
 }

@@ -1,10 +1,9 @@
 package com.example.composition.domain.entity
 
-class Question(
-    val sumOfNumbers: Int,
+data class Question(
+    val sum: Int,
     val visibleNumber: Int,
-    val optionsCount: Int,
-    val correctAnswer: Int,
+    val options: List<Int>,
 ){
 
 }

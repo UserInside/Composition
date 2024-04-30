@@ -1,8 +1,9 @@
 package com.example.composition.domain.entity
 
-class GameResult(
+data class GameResult(
     val winner: Boolean,
-    val resultPoints: Int,
-    val minPointsRequired: Int,
+    val countOfRightAnswers: Int,
+    val countOfQuestions: Int,
+    val gameSettings: GameSettings,
 ) {
 }
