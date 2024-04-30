@@ -1,5 +1,5 @@
 package com.example.composition.domain.entity
 
 enum class Level() {
-    TEXT, EASY, NORMAL, HARD
+    TEST, EASY, NORMAL, HARD
 }
