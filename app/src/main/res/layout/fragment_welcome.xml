@@ -18,10 +18,10 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_logo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_launcher_background"/>
+            android:src="@drawable/ic_brain"/>
 
         <TextView
             android:id="@+id/tv_name"
