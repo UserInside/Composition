@@ -27,7 +27,7 @@
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/application_name"
+            android:text="@string/welcome_title"
             app:layout_constraintTop_toBottomOf="@id/iv_logo"/>
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:text="@string/confirm"
+            android:text="@string/button_understand"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
