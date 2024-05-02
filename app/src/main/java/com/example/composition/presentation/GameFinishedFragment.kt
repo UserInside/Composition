@@ -23,7 +23,6 @@ class GameFinishedFragment : Fragment() {
         parseArgs()
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

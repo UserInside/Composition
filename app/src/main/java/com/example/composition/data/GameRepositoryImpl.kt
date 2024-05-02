@@ -23,7 +23,7 @@ object GameRepositoryImpl : GameRepository {
         while (options.size < optionsCount) {
             options.add(Random.nextInt(from, to))
         }
-        return Question(sum, visibleNumber, options.toList())
+        return Question(sum, visibleNumber, rightAnswer, options.toList())
     }
 
     override fun getGameSettings(level: Level): GameSettings {
