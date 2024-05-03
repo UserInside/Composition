@@ -5,7 +5,6 @@ import android.os.CountDownTimer
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.composition.R
 import com.example.composition.data.GameRepositoryImpl
 import com.example.composition.domain.entity.GameResult
@@ -48,10 +47,6 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     val minPercent: LiveData<Int>
         get() = _minPercent
 
-    private val _percentOfRightAnswers = MutableLiveData<Int>()
-    val percentOfRightAnswers: LiveData<Int>
-        get() = _percentOfRightAnswers
-
     private val _enoughCountOfRightAnswers = MutableLiveData<Boolean>()
     val enoughCountOfRightAnswers: LiveData<Boolean>
         get() = _enoughCountOfRightAnswers
@@ -65,6 +60,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     fun startGame(level: Level) {
         getGameSettings(level)
+        updateProgress()
         startTimer()
         generateQuestion()
     }
@@ -76,7 +72,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun updateProgress() {
-        updatePercentOfRightAnswers()
+        val percent = calculatePercentOfRightAnswers()
         _progress.value = String.format(
             context.resources.getString(R.string.progress_answers),
             countOfRightAnswers,
@@ -85,17 +81,18 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
         _enoughCountOfRightAnswers.value =
             countOfRightAnswers > gameSettings.minCountOfRightAnswers
         _enoughPercentOfRightAnswers.value =
-            percentOfRightAnswers.value!! > gameSettings.minPercentOfRightAnswers
+            percent > gameSettings.minPercentOfRightAnswers
     }
 
-    private fun updatePercentOfRightAnswers() {
-        _percentOfRightAnswers.value = (countOfRightAnswers / countOfQuestions.toDouble() * 100).toInt()
+    private fun calculatePercentOfRightAnswers(): Int {
+        if (countOfQuestions == 0) return 0
+        return (countOfRightAnswers / countOfQuestions.toDouble() * 100).toInt()
     }
 
     private fun startTimer() {
         timer = object : CountDownTimer(
-            gameSettings.gameTimeInSeconds * MILLIS_IN_SECCOND,
-            MILLIS_IN_SECCOND
+            gameSettings.gameTimeInSeconds * MILLIS_IN_SECOND,
+            MILLIS_IN_SECOND
         ) {
             override fun onTick(millisUntilFinished: Long) {
                 _formattedTime.value = formatTime(millisUntilFinished)
@@ -109,7 +106,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun formatTime(millisUntilFinished: Long): String {
-        val seconds = millisUntilFinished / MILLIS_IN_SECCOND
+        val seconds = millisUntilFinished / MILLIS_IN_SECOND
         val minutes = seconds / SECONDS_IN_MINUTES
         val remainingSecond = seconds - (minutes * SECONDS_IN_MINUTES)
         return String.format("%02d:%02d", minutes, remainingSecond)
@@ -124,15 +121,18 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
         )
     }
 
-    fun checkAnswer(i: Int) {
-        countOfQuestions++
-        question.value?.options?.get(i)?.let {
-            if (it == question.value?.rightAnswer) {
-                countOfRightAnswers++
-            }
-        }
-        updateProgress()
+    fun chooseAnswer(number: Int) {
+        checkAnswer(number)
+        zupdateProgress()
         generateQuestion()
+    }
+
+    private fun checkAnswer(number: Int) {
+        val rightAnswer = question.value?.rightAnswer
+        if (number == rightAnswer) {
+            countOfRightAnswers++
+        }
+        countOfQuestions++
     }
 
     override fun onCleared() {
@@ -146,7 +146,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     companion object {
 
-        private const val MILLIS_IN_SECCOND = 1000L
+        private const val MILLIS_IN_SECOND = 1000L
         private const val SECONDS_IN_MINUTES = 60
     }
 
