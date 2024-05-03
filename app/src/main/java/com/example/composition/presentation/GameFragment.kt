@@ -40,8 +40,9 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[GameFragmentViewModel::class.java]
 
-        binding.apply{
-            viewModel.question.observe(viewLifecycleOwner){
+        viewModel.startGame(level)
+        binding.apply {
+            viewModel.question.observe(viewLifecycleOwner) {
                 tvSum.text = it.sum.toString()
                 tvLeftNumber.text = it.visibleNumber.toString()
                 tvOption1.text = it.options[0].toString()
@@ -51,33 +52,30 @@ class GameFragment : Fragment() {
                 tvOption5.text = it.options[4].toString()
                 tvOption6.text = it.options[5].toString()
 
-                rightAnswer = it.rightAnswer
+                tvAnswersProgress.text = viewModel.progress.value
             }
 
-            viewModel.gameSettings.observe(viewLifecycleOwner){gameSettings ->
-                //todo tvTimer = it.gameTimeInSeconds
-                viewModel.rightAnswersCount.observe(viewLifecycleOwner){
-                    tvAnswersProgress.text = getString(R.string.progress_answers, it.toString(), gameSettings.minCountOfRightAnswers.toString())
-
-                }
-                //todo progressBar
+            //todo progressBar
 //                progressBar.min = 0
 //                progressBar.max = gameSettings.minCountOfRightAnswers
-            }
 
-            tvOption1.setOnClickListener {viewModel.checkAnswer(0)}
-            tvOption2.setOnClickListener {viewModel.checkAnswer(1)}
-            tvOption3.setOnClickListener {viewModel.checkAnswer(2)}
-            tvOption4.setOnClickListener {viewModel.checkAnswer(3)}
-            tvOption5.setOnClickListener {viewModel.checkAnswer(4)}
-            tvOption6.setOnClickListener {viewModel.checkAnswer(5)}
+
+            tvOption1.setOnClickListener { viewModel.checkAnswer(0) }
+            tvOption2.setOnClickListener { viewModel.checkAnswer(1) }
+            tvOption3.setOnClickListener { viewModel.checkAnswer(2) }
+            tvOption4.setOnClickListener { viewModel.checkAnswer(3) }
+            tvOption5.setOnClickListener { viewModel.checkAnswer(4) }
+            tvOption6.setOnClickListener { viewModel.checkAnswer(5) }
+        }
+        viewModel.gameResult.observe(viewLifecycleOwner) {
+            launchGameFinishedFragment(it)
         }
 
 
     }
 
     private fun parseArgs() {
-        requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let{
+        requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let {
             level = it
         }
     }
