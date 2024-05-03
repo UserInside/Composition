@@ -123,7 +123,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
 
     fun chooseAnswer(number: Int) {
         checkAnswer(number)
-        zupdateProgress()
+        updateProgress()
         generateQuestion()
     }
 
