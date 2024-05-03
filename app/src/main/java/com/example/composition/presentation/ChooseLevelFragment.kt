@@ -13,7 +13,7 @@ class ChooseLevelFragment : Fragment() {
 
     private var _binding: FragmentChooseLevelBinding? = null
     private val binding: FragmentChooseLevelBinding
-        get() = _binding ?: throw NullPointerException("FragmentChooseLevelBinding == null")
+        get() = _binding ?: throw RuntimeException("FragmentChooseLevelBinding == null")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,17 +25,20 @@ class ChooseLevelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            btnTestLevel.setOnClickListener { launchGameFragment(Level.TEST) }
-            btnEasyLevel.setOnClickListener { launchGameFragment(Level.EASY) }
-            btnNormalLevel.setOnClickListener { launchGameFragment(Level.NORMAL) }
-            btnHardLevel.setOnClickListener { launchGameFragment(Level.HARD) }
+        with(binding) {
+            btnTestLevel.setOnClickListener {
+                launchGameFragment(Level.TEST)
+            }
+            btnEasyLevel.setOnClickListener {
+                launchGameFragment(Level.EASY)
+            }
+            btnNormalLevel.setOnClickListener {
+                launchGameFragment(Level.NORMAL)
+            }
+            btnHardLevel.setOnClickListener {
+                launchGameFragment(Level.HARD)
+            }
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun launchGameFragment(level: Level) {
@@ -45,7 +48,14 @@ class ChooseLevelFragment : Fragment() {
             .commit()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
+
+        const val NAME = "ChooseLevelFragment"
 
         fun newInstance(): ChooseLevelFragment {
             return ChooseLevelFragment()
