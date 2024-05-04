@@ -24,7 +24,7 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnConfirm.setOnClickListener {
+        binding.buttonUnderstand.setOnClickListener {
             launchChooseLevelFragment()
         }
     }
@@ -37,7 +37,7 @@ class WelcomeFragment : Fragment() {
     private fun launchChooseLevelFragment() {
         requireActivity().supportFragmentManager.beginTransaction()
             .addToBackStack(null)
-            .replace(R.id.fragment_container, ChooseLevelFragment.newInstance())
+            .replace(R.id.main_container, ChooseLevelFragment.newInstance())
             .commit()
     }
 }

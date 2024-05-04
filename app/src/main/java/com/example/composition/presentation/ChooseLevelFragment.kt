@@ -26,16 +26,16 @@ class ChooseLevelFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(binding) {
-            btnTestLevel.setOnClickListener {
+            buttonLevelTest.setOnClickListener {
                 launchGameFragment(Level.TEST)
             }
-            btnEasyLevel.setOnClickListener {
+            buttonLevelEasy.setOnClickListener {
                 launchGameFragment(Level.EASY)
             }
-            btnNormalLevel.setOnClickListener {
+            buttonLevelNormal.setOnClickListener {
                 launchGameFragment(Level.NORMAL)
             }
-            btnHardLevel.setOnClickListener {
+            buttonLevelHard.setOnClickListener {
                 launchGameFragment(Level.HARD)
             }
         }
@@ -43,7 +43,7 @@ class ChooseLevelFragment : Fragment() {
 
     private fun launchGameFragment(level: Level) {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, GameFragment.newInstance(level))
+            .replace(R.id.main_container, GameFragment.newInstance(level))
             .addToBackStack(GameFragment.NAME)
             .commit()
     }

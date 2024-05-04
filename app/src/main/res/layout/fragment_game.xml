@@ -13,12 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:textColor="#38019C"
+        android:textColor="@color/purple_700"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="00:00" />
+        tools:text="00:00"
+        />
 
     <TextView
         android:id="@+id/tv_sum"
@@ -40,21 +41,22 @@
         style="@style/QuestionTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#009688"
+        android:background="@color/teal_700"
         app:layout_constraintBottom_toTopOf="@id/tv_option_1"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/tv_question"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_sum"
-        tools:text="7" />
+        tools:text="7"
+        />
 
     <TextView
         android:id="@+id/tv_question"
         style="@style/QuestionTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#009688"
+        android:background="@color/teal_700"
         android:text="@string/question_mark"
         app:layout_constraintBottom_toBottomOf="@id/tv_left_number"
         app:layout_constraintDimensionRatio="1:1"
