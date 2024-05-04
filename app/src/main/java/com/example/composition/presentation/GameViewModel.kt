@@ -2,7 +2,7 @@ package com.example.composition.presentation
 
 import android.app.Application
 import android.os.CountDownTimer
-import androidx.lifecycle.AndroidViewModel
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,12 +15,13 @@ import com.example.composition.domain.entity.Question
 import com.example.composition.domain.usecase.GenerateQuestionUseCase
 import com.example.composition.domain.usecase.GetGameSettingsUseCase
 
-class GameFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class GameViewModel(
+    private val level: Level,
+    private val application: Application,
+) : ViewModel() {
 
     private lateinit var gameSettings: GameSettings
-    private lateinit var level: Level
 
-    private val context = application
     private val repository = GameRepositoryImpl
 
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
@@ -63,24 +64,33 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     private var countOfRightAnswers = 0
     private var countOfQuestions = 0
 
-    fun startGame(level: Level) {
-        getGameSettings(level)
+    init {
+        startGame()
+    }
+
+    fun startGame() {
+        Log.i("GM", "VM startgame")
+        getGameSettings()
         startTimer()
         generateQuestion()
         updateProgress()
     }
 
     fun chooseAnswer(number: Int) {
+        Log.i("GM", "VM chooseanswer")
+
         checkAnswer(number)
         updateProgress()
         generateQuestion()
     }
 
     private fun updateProgress() {
+        Log.i("GM", "VM updateprogress")
+
         val percent = calculatePercentOfRightAnswers()
         _percentOfRightAnswers.value = percent
         _progressAnswers.value = String.format(
-            context.resources.getString(R.string.progress_answers),
+            application.resources.getString(R.string.progress_answers),
             countOfRightAnswers,
             gameSettings.minCountOfRightAnswers
         )
@@ -89,6 +99,8 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun calculatePercentOfRightAnswers(): Int {
+        Log.i("GM", "VM calculaterightanswer")
+
         if (countOfQuestions == 0) {
             return 0
         }
@@ -96,6 +108,8 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun checkAnswer(number: Int) {
+        Log.i("GM", "VM checkanswer")
+
         val rightAnswer = question.value?.rightAnswer
         if (number == rightAnswer) {
             countOfRightAnswers++
@@ -103,13 +117,15 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
         countOfQuestions++
     }
 
-    private fun getGameSettings(level: Level) {
-        this.level = level
+    private fun getGameSettings() {
+        Log.i("GM", "VM gamesettingsget")
         this.gameSettings = getGameSettingsUseCase(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswers
     }
 
     private fun startTimer() {
+        Log.i("GM", "VM starttimer")
+
         timer = object : CountDownTimer(
             gameSettings.gameTimeInSeconds * MILLIS_IN_SECONDS,
             MILLIS_IN_SECONDS
@@ -126,6 +142,8 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun generateQuestion() {
+        Log.i("GM", "VM generatequestion")
+
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)
     }
 
@@ -137,6 +155,8 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     private fun finishGame() {
+        Log.i("GM", "VM finishgame")
+
         _gameResult.value = GameResult(
             enoughCount.value == true && enoughPercent.value == true,
             countOfRightAnswers,
@@ -146,6 +166,8 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(applica
     }
 
     override fun onCleared() {
+        Log.i("GM", "VM oncleared")
+
         super.onCleared()
         timer?.cancel()
     }

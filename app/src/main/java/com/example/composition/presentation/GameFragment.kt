@@ -18,11 +18,11 @@ import com.example.composition.domain.entity.Level
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
+    private val viewModelFactory by lazy {
+        GameViewModelFactory(level, requireActivity().application)
+    }
     private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameFragmentViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[GameViewModel::class.java]
     }
 
     private val tvOptions by lazy {
@@ -57,11 +57,14 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
         setClickListenersToOptions()
-        viewModel.startGame(level)
+        viewModel.startGame()
     }
 
     private fun setClickListenersToOptions() {
+        Log.i("GM", "AC setclicklisteners")
+
         for (tvOption in tvOptions) {
+            Log.i("GM", "AC setclicklisteners in cycle ${tvOption.text}")
             tvOption.setOnClickListener {
                 viewModel.chooseAnswer(tvOption.text.toString().toInt())
             }
@@ -69,11 +72,16 @@ class GameFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        Log.i("GM", "AC observeVM")
+
         viewModel.question.observe(viewLifecycleOwner) {
             binding.tvSum.text = it.sum.toString()
             binding.tvLeftNumber.text = it.visibleNumber.toString()
             for (i in 0 until tvOptions.size) {
+
                 tvOptions[i].text = it.options[i].toString()
+                Log.i("GM", "AC observe cycle ${tvOptions[i].text}")
+
             }
         }
         viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
@@ -106,6 +114,8 @@ class GameFragment : Fragment() {
     }
 
     private fun getColorByState(goodState: Boolean): Int {
+        Log.i("GM", "AC getColor")
+
         val colorResId = if (goodState) {
             android.R.color.holo_green_light
         } else {
@@ -115,6 +125,8 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArgs() {
+        Log.i("GM", "AC parseargs")
+
         requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let {
             level = it
         }
