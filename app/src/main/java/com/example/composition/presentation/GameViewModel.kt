@@ -69,7 +69,6 @@ class GameViewModel(
     }
 
     fun startGame() {
-        Log.i("GM", "VM startgame")
         getGameSettings()
         startTimer()
         generateQuestion()
@@ -77,16 +76,12 @@ class GameViewModel(
     }
 
     fun chooseAnswer(number: Int) {
-        Log.i("GM", "VM chooseanswer")
-
         checkAnswer(number)
         updateProgress()
         generateQuestion()
     }
 
     private fun updateProgress() {
-        Log.i("GM", "VM updateprogress")
-
         val percent = calculatePercentOfRightAnswers()
         _percentOfRightAnswers.value = percent
         _progressAnswers.value = String.format(
@@ -99,8 +94,6 @@ class GameViewModel(
     }
 
     private fun calculatePercentOfRightAnswers(): Int {
-        Log.i("GM", "VM calculaterightanswer")
-
         if (countOfQuestions == 0) {
             return 0
         }
@@ -108,8 +101,6 @@ class GameViewModel(
     }
 
     private fun checkAnswer(number: Int) {
-        Log.i("GM", "VM checkanswer")
-
         val rightAnswer = question.value?.rightAnswer
         if (number == rightAnswer) {
             countOfRightAnswers++
@@ -118,14 +109,11 @@ class GameViewModel(
     }
 
     private fun getGameSettings() {
-        Log.i("GM", "VM gamesettingsget")
         this.gameSettings = getGameSettingsUseCase(level)
         _minPercent.value = gameSettings.minPercentOfRightAnswers
     }
 
     private fun startTimer() {
-        Log.i("GM", "VM starttimer")
-
         timer = object : CountDownTimer(
             gameSettings.gameTimeInSeconds * MILLIS_IN_SECONDS,
             MILLIS_IN_SECONDS
@@ -142,8 +130,6 @@ class GameViewModel(
     }
 
     private fun generateQuestion() {
-        Log.i("GM", "VM generatequestion")
-
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)
     }
 
@@ -155,8 +141,6 @@ class GameViewModel(
     }
 
     private fun finishGame() {
-        Log.i("GM", "VM finishgame")
-
         _gameResult.value = GameResult(
             enoughCount.value == true && enoughPercent.value == true,
             countOfRightAnswers,
@@ -166,8 +150,6 @@ class GameViewModel(
     }
 
     override fun onCleared() {
-        Log.i("GM", "VM oncleared")
-
         super.onCleared()
         timer?.cancel()
     }

@@ -2,7 +2,6 @@ package com.example.composition.presentation
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,10 +60,7 @@ class GameFragment : Fragment() {
     }
 
     private fun setClickListenersToOptions() {
-        Log.i("GM", "AC setclicklisteners")
-
         for (tvOption in tvOptions) {
-            Log.i("GM", "AC setclicklisteners in cycle ${tvOption.text}")
             tvOption.setOnClickListener {
                 viewModel.chooseAnswer(tvOption.text.toString().toInt())
             }
@@ -72,16 +68,11 @@ class GameFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        Log.i("GM", "AC observeVM")
-
         viewModel.question.observe(viewLifecycleOwner) {
             binding.tvSum.text = it.sum.toString()
             binding.tvLeftNumber.text = it.visibleNumber.toString()
             for (i in 0 until tvOptions.size) {
-
                 tvOptions[i].text = it.options[i].toString()
-                Log.i("GM", "AC observe cycle ${tvOptions[i].text}")
-
             }
         }
         viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
@@ -114,8 +105,6 @@ class GameFragment : Fragment() {
     }
 
     private fun getColorByState(goodState: Boolean): Int {
-        Log.i("GM", "AC getColor")
-
         val colorResId = if (goodState) {
             android.R.color.holo_green_light
         } else {
@@ -125,8 +114,6 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        Log.i("GM", "AC parseargs")
-
         requireArguments().getParcelable(KEY_LEVEL, Level::class.java)?.let {
             level = it
         }
@@ -134,8 +121,8 @@ class GameFragment : Fragment() {
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
             .addToBackStack(null)
+            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
             .commit()
     }
 
